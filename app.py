@@ -15,7 +15,7 @@ from config import (
     CHANNEL_ACCESS_TOKEN,
 )
 
-app = Flask(__name__)
+app = Flask('your_application')
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
