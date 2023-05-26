@@ -22,6 +22,8 @@ from config import (
     CHANNEL_ACCESS_TOKEN,
 )
 
+from firebase_controller import add_recipt
+
 linebot_url = Blueprint("linebot", __name__, '/linebot')
 
 # -------------------------- LINE Bot Init --------------------------
@@ -52,6 +54,19 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    # -------------------------- ユーザ情報の取得 --------------------------
+    profile = line_bot_api.get_profile(event.source.user_id)
+    print('name:', profile.display_name,', id:', profile.user_id)
+
+    # -------------------------- メッセージによって処理を分岐 --------------------------
+    message = event.message.text
+    print(f"[*] message : {message}")
+    if message == "価格は[0-9]+円":
+        value = message.split('は')[-1].split('円')[0]
+        print(f'[*] value : {value}')
+        add_recipt(profile.display_name, value)
+
+    # -------------------------- 返信 --------------------------
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text))
