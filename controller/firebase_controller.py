@@ -44,7 +44,6 @@ def get_recipt_this_month(username, month):
     print(start_date, end_date)
 
     docs = db.collection('recipt').where('name','==',username).where('timestamp', '>=', start_date).where('timestamp','<=',end_date).stream()
-    # docs = db.collection('recipt').order_by('value').end_at({u'value':10000}).stream()
     sum_value = 0
     for doc in docs:
         sum_value += doc.to_dict()['value']
